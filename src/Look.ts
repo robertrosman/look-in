@@ -1,5 +1,5 @@
 
-const formatResult = (match, format) => {
+const formatResult = (match: RegExpMatchArray, format: string): string => {
     return format.replace(/\$([$&0-9])/g, (m, p1) => {
         if (m === '$$') return '$'
         if (m === '$&') return match?.[0]
@@ -7,96 +7,114 @@ const formatResult = (match, format) => {
     })
 }
 
+interface Options {
+    text?: string
+    scopeStart?: number
+    scopeEnd?: number
+    caseSensitive?: boolean
+    dotNewline?: boolean
+}
+
 class Look {
-    constructor(obj) {
-        this.text = obj.text
+    text: string
+    scopeStart: number
+    scopeEnd: number
+    caseSensitive: boolean
+    dotNewline: boolean
+
+    constructor(obj: Options) {
+        this.text = obj.text ?? ""
         this.scopeStart = obj.scopeStart ?? 0
-        this.scopeEnd = obj.scopeEnd ?? obj.text?.length
+        this.scopeEnd = obj.scopeEnd ?? obj.text?.length ?? 0
         this.caseSensitive = obj.caseSensitive ?? false
         this.dotNewline = obj.dotNewline ?? true
     }
 
-    clone(modifications) {
-        return new Look(Object.assign({}, this, modifications))
+    clone(modifications?: Options): Look {
+        return Object.assign(new Look(this), modifications)
     }
 
-    options(options) {
+    options(options?: Options): Look {
         return this.clone(options)
     }
 
-    static in (text) {
+    static in (text: string): Look {
         return new Look({ text })
     }
 
-    in (text) {
-        return this.clone({ text })
+    in (text: string): Look {
+        return this.clone({ 
+            text,
+            scopeStart: 0,
+            scopeEnd: text.length
+        })
     }
 
-    get scopedText() {
+    get scopedText(): string {
         return this.text.substring(this.scopeStart, this.scopeEnd)
     }
 
-    after(pattern) {
+    after(pattern: string | RegExp): Look {
         const clone = this.clone()
         const result = this.match(pattern)
-        clone.scopeStart = result 
+        clone.scopeStart = result?.index
             ? this.scopeStart + result.index + result[0].length
             : this.scopeEnd 
         return clone
     }
 
-    before(pattern) {
+    before(pattern: string | RegExp): Look {
         const clone = this.clone()
         const result = this.match(pattern)
-        clone.scopeEnd = result 
+        clone.scopeEnd = result?.index
             ? this.scopeStart + result.index
             : this.scopeStart
         return clone
     }
 
-    between(startPattern, endPattern) {
+    between(startPattern: string | RegExp, endPattern: string | RegExp): Look {
         return this.after(startPattern).before(endPattern)
     }
 
-    find (pattern, format = '$&') {
+    find (pattern: string | RegExp, format: string = '$&'): string | undefined {
         const match = this.match(pattern)
         if (match) return formatResult(match, format)
     }
 
-    findAll (pattern, format = '$&') {
+    findAll (pattern: string | RegExp, format: string = '$&'): string[] {
         const match = this.matchAll(pattern)
         return match.map(m => formatResult(m, format))
     }
 
-    match(pattern) {
+    match(pattern: string | RegExp): RegExpMatchArray | null {
         const regexp = this.generateRegexp(pattern, false)
         return this.scopedText.match(regexp)
     }
 
-    matchAll(pattern) {
+    matchAll(pattern: string | RegExp): RegExpMatchArray[] {
         const regexp = this.generateRegexp(pattern)
         return [...this.scopedText.matchAll(regexp)]
     }
 
-    replace(pattern, replacement) {
+    replace(pattern: string | RegExp, replacement: string): string {
         const regexp = this.generateRegexp(pattern, false)
         const newScopedText = this.scopedText.replace(regexp, replacement)
         return this.replaceScopedText(newScopedText)
     }
 
-    replaceAll(pattern, replacement) {
+    replaceAll(pattern: string | RegExp, replacement: string): string {
         const regexp = this.generateRegexp(pattern, true)
-        const newScopedText = this.scopedText.replaceAll(regexp, replacement)
+        const newScopedText = this.scopedText.replace(regexp, replacement)
         return this.replaceScopedText(newScopedText)
     }
 
-    replaceScopedText(replacement) {
+    replaceScopedText(replacement: string): string {
         return this.text.substring(0, this.scopeStart)
             + replacement
             + this.text.substring(this.scopeEnd)
     }
 
-    generateRegexp(pattern, global = true) {
+    generateRegexp(pattern: string | RegExp, global: boolean = true) {
         const source = pattern instanceof RegExp
             ? pattern.source 
             : pattern.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
@@ -108,4 +126,4 @@ class Look {
     }
 }
 
-module.exports = Look
+export default Look

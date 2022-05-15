@@ -1,5 +1,5 @@
-const { expect } = require("chai")
-const Look = require('../src/Look')
+import { expect } from "chai"
+import Look from '../src/Look'
 
 describe('Look', () => {
     describe('in', () => {
