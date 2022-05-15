@@ -44,11 +44,25 @@ describe('Look', () => {
             expect(result).to.equal("IS")
         })
 
-        it('should support capture group return', () => {
+        it('should support back reference in format', () => {
             const result = Look.in("This is the string as expected")
-                .find(/the (string) as/, 1)
+                .find(/the (string) as/, '$1')
 
             expect(result).to.equal("string")
+        })
+
+        it('should support dollar sign in format', () => {
+            const result = Look.in("This is the string as expected")
+                .find(/the (string) as/, '$ $$ $')
+
+            expect(result).to.equal("$ $ $")
+        })
+
+        it('should support dollar sign in format', () => {
+            const result = Look.in("This is the string as expected")
+                .find(/the (string) as/, 'a $1 just as')
+
+            expect(result).to.equal("a string just as")
         })
 
         it('should escape regex characters in string patterns', () => {
@@ -99,7 +113,7 @@ describe('Look', () => {
 
         it('should support capture group return', () => {
             const result = Look.in("This is the string as expected")
-                .findAll(/the (string) as/, 1)
+                .findAll(/the (string) as/, '$1')
 
             expect(result[0]).to.equal("string")
         })

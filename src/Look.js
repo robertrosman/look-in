@@ -1,4 +1,12 @@
 
+const formatResult = (match, format) => {
+    return format.replace(/\$([$&0-9])/g, (m, p1) => {
+        if (m === '$$') return '$'
+        if (m === '$&') return match?.[0]
+        return match?.[p1]
+    })
+}
+
 class Look {
     constructor(obj) {
         this.text = obj.text
@@ -50,14 +58,14 @@ class Look {
         return this.after(startPattern).before(endPattern)
     }
 
-    find (pattern, captureGroup = 0) {
+    find (pattern, format = '$&') {
         const match = this.match(pattern)
-        return match?.[captureGroup]
+        if (match) return formatResult(match, format)
     }
 
-    findAll (pattern, captureGroup = 0) {
+    findAll (pattern, format = '$&') {
         const match = this.matchAll(pattern)
-        return match.map(m => m[captureGroup])
+        return match.map(m => formatResult(m, format))
     }
 
     match(pattern) {
