@@ -1,0 +1,34 @@
+{
+  "name": "look-in",
+  "version": "1.0.0",
+  "description": "Chainable, immutable, dependecy-free library to make text search and replace more readable",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha **/*.test.js",
+    "test:watch": "mocha **/*.test.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robertrosman/look-in.git"
+  },
+  "keywords": [
+    "javascript",
+    "textmanipulation",
+    "search",
+    "replace",
+    "readable",
+    "semantic",
+    "chainable",
+    "immutable"
+  ],
+  "author": "Robert Rosman <robertrosman@gmx.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robertrosman/look-in/issues"
+  },
+  "homepage": "https://github.com/robertrosman/look-in#readme",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0"
+  }
+}
