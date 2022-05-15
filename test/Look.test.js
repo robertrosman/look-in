@@ -233,4 +233,39 @@ describe('Look', () => {
             expect(look.scopedText).to.equal(' as ')
         })
     })
+
+    describe('replace', () => {
+        it('should replace first match with replacement', () => {
+            const result = Look.in("I scream, you scream, we all scream for ice cream")
+                .after("you")
+                .replace("scream", "dream")
+
+            expect(result).to.equal('I scream, you dream, we all scream for ice cream')
+        })
+
+        it('should support back reference in replacement', () => {
+            const result = Look.in("I scream, you scream, we all scream for ice cream")
+                .after("you")
+                .replace(/(\w+) scream/, "$1 dream")
+
+            expect(result).to.equal('I scream, you scream, we all dream for ice cream')
+        })
+    })
+
+    describe('replaceAll', () => {
+        it('should replace all matches in scope with replacement', () => {
+            const result = Look.in("I scream, you scream, we all scream for ice cream")
+                .after("you")
+                .replaceAll("scream", "dream")
+
+            expect(result).to.equal('I scream, you dream, we all dream for ice cream')
+        })
+
+        it('should support back reference in replacement', () => {
+            const result = Look.in("I scream, you scream, we all scream for ice cream")
+                .replaceAll(/(\w+) scream/, "$1 dream")
+
+            expect(result).to.equal('I dream, you dream, we all dream for ice cream')
+        })
+    })
 })

@@ -28,16 +28,6 @@ class Look {
         return this.text.substring(this.scopeStart, this.scopeEnd)
     }
 
-    find (pattern, captureGroup = 0) {
-        const match = this.match(pattern)
-        return match?.[captureGroup]
-    }
-
-    findAll (pattern, captureGroup = 0) {
-        const match = this.matchAll(pattern)
-        return match.map(m => m[captureGroup])
-    }
-
     after(pattern) {
         const clone = this.clone()
         const result = this.match(pattern)
@@ -60,14 +50,42 @@ class Look {
         return this.after(startPattern).before(endPattern)
     }
 
-    matchAll(pattern) {
-        const regexp = this.generateRegexp(pattern)
-        return [...this.scopedText.matchAll(regexp)]
+    find (pattern, captureGroup = 0) {
+        const match = this.match(pattern)
+        return match?.[captureGroup]
+    }
+
+    findAll (pattern, captureGroup = 0) {
+        const match = this.matchAll(pattern)
+        return match.map(m => m[captureGroup])
     }
 
     match(pattern) {
         const regexp = this.generateRegexp(pattern, false)
         return this.scopedText.match(regexp)
+    }
+
+    matchAll(pattern) {
+        const regexp = this.generateRegexp(pattern)
+        return [...this.scopedText.matchAll(regexp)]
+    }
+
+    replace(pattern, replacement) {
+        const regexp = this.generateRegexp(pattern, false)
+        const newScopedText = this.scopedText.replace(regexp, replacement)
+        return this.replaceScopedText(newScopedText)
+    }
+
+    replaceAll(pattern, replacement) {
+        const regexp = this.generateRegexp(pattern, true)
+        const newScopedText = this.scopedText.replaceAll(regexp, replacement)
+        return this.replaceScopedText(newScopedText)
+    }
+
+    replaceScopedText(replacement) {
+        return this.text.substring(0, this.scopeStart)
+            + replacement
+            + this.text.substring(this.scopeEnd)
     }
 
     generateRegexp(pattern, global = true) {
