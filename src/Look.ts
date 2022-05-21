@@ -227,10 +227,12 @@ export class Look {
         const source = pattern instanceof RegExp
             ? pattern.source 
             : pattern.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
-        const flags = ["m"]
-        if (global) flags.push("g")
-        if (this.dotNewline) flags.push("s")
-        if (!this.caseSensitive) flags.push("i")
-        return new RegExp(source, flags.join(''))
+
+        const flags = "m"
+            + (global ? "g" : "")
+            + (this.dotNewline ? "s" : "")
+            + (!this.caseSensitive ? "i" : "")
+
+        return new RegExp(source, flags)
     }
 }
