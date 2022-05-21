@@ -2,16 +2,27 @@
 <html>
   <head>
     <title>Browser Tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
+    <div id="mocha"></div>
+
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
 
     <script type="module">
       import { Look } from "./src/Look.ts"
-      const result = Look.in("Hi there little test, could you test me please?")
-        .after(",")
-        .findAll(/test/)
+      import 'mocha/mocha.css';
 
-        console.log(`<h1>Matches: ${result.length}</h1>`)
+      (async () => {
+
+        mocha.setup('bdd');
+
+        await import('./test/Look.test.ts')
+        
+        mocha.run();
+
+      })();
     </script>
   </body>
 </html>
