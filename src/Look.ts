@@ -15,7 +15,7 @@ interface Options {
     dotNewline?: boolean
 }
 
-class Look {
+export class Look {
     text: string
     scopeStart: number
     scopeEnd: number
@@ -234,5 +234,3 @@ class Look {
         return new RegExp(source, flags.join(''))
     }
 }
-
-export default Look

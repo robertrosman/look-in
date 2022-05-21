@@ -1,5 +1,20 @@
 import { expect } from "chai"
-import Look from '../src/Look'
+import { Look } from '../src/Look'
+
+declare module '../src/Look' {
+    export interface Look {
+        /**
+         * Find all words that rhyme on eam, such as scream and cream
+         * @returns All matching words
+         */
+        findAllRhymesOnEam(): string[];
+    }
+}
+
+Look.prototype.findAllRhymesOnEam = function() {
+    return this.findAll(/(\w+eam)(\W|$)/)
+}
+
 
 describe('Look', () => {
     describe('in', () => {
@@ -280,6 +295,15 @@ describe('Look', () => {
                 .replaceAll(/(\w+) scream/, "$1 dream")
 
             expect(result).to.equal('I dream, you dream, we all dream for ice cream')
+        })
+    })
+
+    describe('extensions', () => {
+        it('should be able to extend with custom functions', () => {
+            const result = Look.in("I scream, you scream, we all scream for ice cream")
+                .findAllRhymesOnEam()
+
+            expect(result.length).to.equal(4)
         })
     })
 })
