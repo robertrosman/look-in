@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Browser Tests</title>
+  </head>
+  <body>
+
+    <script type="module">
+      import { Look } from "./src/Look.ts"
+      const result = Look.in("Hi there little test, could you test me please?")
+        .after(",")
+        .findAll(/test/)
+
+        console.log(`<h1>Matches: ${result.length}</h1>`)
+    </script>
+  </body>
+</html>

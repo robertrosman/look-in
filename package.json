@@ -4,7 +4,8 @@
   "description": "Chainable, immutable, dependecy-free library to make text search and replace more readable",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && uglifyjs dist/Look.js -c -m -o dist/Look.min.js",
+    "browser": "vite",
+    "build": "vite build",
     "test": "ts-mocha **/*.test.ts",
     "test:watch": "ts-mocha **/*.test.ts -w --watch-files **/*.ts"
   },
@@ -35,6 +36,6 @@
     "mocha": "^10.0.0",
     "ts-mocha": "^10.0.0",
     "typescript": "^4.6.4",
-    "uglify-js": "^3.15.5"
+    "vite": "^2.9.9"
   }
 }
