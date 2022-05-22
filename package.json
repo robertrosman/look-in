@@ -4,8 +4,9 @@
   "description": "Chainable, immutable, dependecy-free library to make text search and replace more readable",
   "main": "index.js",
   "scripts": {
-    "browser": "vite",
-    "build": "vite build",
+    "browser": "vite --config vite/vite.config.js",
+    "build": "vite build --config vite/vite.config.js",
+    "build:cdn": "vite build --config vite/cdn.config.js",
     "test": "ts-mocha **/*.test.ts",
     "test:watch": "ts-mocha **/*.test.ts -w --watch-files **/*.ts"
   },

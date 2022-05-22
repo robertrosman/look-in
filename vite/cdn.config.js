@@ -5,9 +5,10 @@ const { defineConfig } = require('vite')
 module.exports = defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/Look.ts'),
+      entry: path.resolve(__dirname, '../src/Look.default.ts'),
       name: 'Look',
-      fileName: (format) => `look-in.${format}.js`
+      formats: ['umd'],
+      fileName: (format) => `look-in.min.js`
     }
   }
 })
