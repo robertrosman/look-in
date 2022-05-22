@@ -9,6 +9,7 @@ module.exports = defineConfig({
       name: 'Look',
       formats: ['umd'],
       fileName: (format) => `look-in.min.js`
-    }
+    },
+    emptyOutDir: false
   }
 })

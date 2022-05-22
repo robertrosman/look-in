@@ -3,15 +3,29 @@
   <head>
     <title>Browser Tests</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      h1 {
+        font: 20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 200;
+      }
+    </style>
   </head>
   <body>
+    <h1 class="cdn-test">CDN build is BROKEN!</h1>
+    
+    <script src="dist/look-in.min.js"></script>
+    <script>
+      console.log(Look)
+      document.querySelector(".cdn-test").innerText = Look.in("CDN build is BROKEN!").replace(/BROKEN!/, 'working')
+    </script>
+
     <div id="mocha"></div>
 
     <script src="https://unpkg.com/chai/chai.js"></script>
     <script src="https://unpkg.com/mocha/mocha.js"></script>
 
     <script type="module">
-      import { Look } from "./src/Look.ts"
+      import { Look } from "./src/index.ts"
       import 'mocha/mocha.css';
 
       (async () => {
@@ -24,5 +38,6 @@
 
       })();
     </script>
+
   </body>
 </html>
